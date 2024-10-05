@@ -1,38 +1,25 @@
 import Header from '@components/Header';
+import ZipCodeDataViewer from '@components/ZipCodeDataViewer';
 import ZipCodeInput from '@components/ZipCodeInput';
+import { ZipCodeData } from '@models/ZipCodeData';
 import axios from 'axios';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { ActivityIndicator, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
-
-type ZipCodeData = {
-  cep: string;
-  logradouro: string;
-  complemento: string;
-  unidade: string;
-  bairro: string;
-  localidade: string;
-  uf: string;
-  estado: string;
-  regiao: string;
-  ibge: string;
-  gia: string;
-  ddd: string;
-  siafi: string;
-};
 
 export default function App() {
   const [ zipCode, setZipCode ] = useState<string>('');
   const [ zipCodeData, setZipCodeData ] = useState<ZipCodeData | null>();
   const [ loading, setLoading ] = useState<boolean>(false);
 
-  function showErrorMessage() {
+  function showErrorMessage(message: string) {
     Toast.show({
       text1: 'Error!',
-      text2: 'An error occurred while fetching zip code data',
-      type: 'info',
+      text2: message,
+      type: 'error',
       position: 'bottom',
       visibilityTime: 10000,
       autoHide: true,
@@ -42,27 +29,28 @@ export default function App() {
 
   useEffect(() => {
     async function getZipCodeData() {
-      setZipCodeData(null);
       setLoading(true);
 
       try {
         const { data } = await axios.get<ZipCodeData | { erro: boolean }>(`https://viacep.com.br/ws/${zipCode}/json/`);
 
         if ('erro' in data) {
-          showErrorMessage();
+          showErrorMessage('Zip code data not found');
         } else {
           setZipCodeData(data);
         }
       } catch (error) {
         console.log(error);
-        showErrorMessage();
+        showErrorMessage('An error occurred while fetching zip code data');
       } finally {
         setLoading(false);
       }
     }
 
     const id = setTimeout(() => {
-      if (zipCode.length > 0) {
+      setZipCodeData(null);
+
+      if (zipCode.length === 8) {
         getZipCodeData();
       }
     }, 1000);
@@ -90,17 +78,17 @@ export default function App() {
           value={zipCode}
           onChangeText={setZipCode}
         />
-        <Toast/>
         {loading ? (
-          // this will be an skeleton
-          <>
-            <Text>Some skeleton</Text>
-          </>
+          <ActivityIndicator
+            color="#243647"
+            size={48}
+          />
         ) : (
           <>
-            { zipCodeData && <Text style={{ color: '#fff' }}>{ JSON.stringify(zipCodeData, null, 2) }</Text> }
+            { zipCodeData && <ZipCodeDataViewer data={zipCodeData}/> }
           </>
         )}
+        <Toast/>
       </SafeAreaView>
     </SafeAreaProvider>
   );

@@ -5,7 +5,10 @@
     "paths": {
       "@components/*": [
         "./src/components/*"
-      ]
+      ],
+      "@models/*": [
+        "./src/models/*"
+      ],
     }
   }
 }
