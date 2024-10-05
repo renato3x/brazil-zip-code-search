@@ -79,10 +79,12 @@ export default function App() {
           onChangeText={setZipCode}
         />
         {loading ? (
-          <ActivityIndicator
-            color="#243647"
-            size={48}
-          />
+          <View style={styles.spinnerContainer}>
+            <ActivityIndicator
+              color="#fff"
+              size={48}
+            />
+          </View>
         ) : (
           <>
             { zipCodeData && <ZipCodeDataViewer data={zipCodeData}/> }
@@ -100,4 +102,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#121A21',
     paddingHorizontal: 16,
   },
+  spinnerContainer: {
+    paddingVertical: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+  }
 });
