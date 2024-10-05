@@ -3,13 +3,18 @@ import { StyleSheet, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import { MaskedTextInput } from 'react-native-mask-text';
 
-export default function ZipCodeInput() {
+interface ZipCodeInputProps {
+  value: string;
+  onChangeText: (value: string) => void;
+}
+
+export default function ZipCodeInput({ value, onChangeText }: ZipCodeInputProps) {
   const [ fontsLoaded ] = useFonts({
     Roboto_400Regular,
   });
 
-  function handleChangeText(text: string, rawText: string) {
-    // some code here...
+  function handleChangeText(_text: string, rawText: string) {
+    onChangeText(rawText);
   }
 
   if (fontsLoaded) {
@@ -25,6 +30,7 @@ export default function ZipCodeInput() {
           placeholder="Enter zip code"
           placeholderTextColor="#91ADC9"
           keyboardType="numeric"
+          value={value}
         />
       </View>
     );
