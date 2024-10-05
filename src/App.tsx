@@ -1,4 +1,5 @@
 import Header from '@components/Header';
+import ZipCodeInput from '@components/ZipCodeInput';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
@@ -9,6 +10,7 @@ export default function App() {
       <StatusBar style="light"/>
       <SafeAreaView style={styles.container}>
         <Header/>
+        <ZipCodeInput/>
       </SafeAreaView>
     </SafeAreaProvider>
   );
@@ -17,6 +19,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#121A21'
+    backgroundColor: '#121A21',
+    paddingHorizontal: 16,
   }
 })
