@@ -18,13 +18,20 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#121A21"
-      }
+      },
+      "package": "com.renato3x.brazilzipcodesearch"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
       "expo-font"
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "6f402bd8-7e37-47e4-bba2-0bd7ed22dd8f"
+      }
+    },
+    "owner": "renato3x"
   }
 }
